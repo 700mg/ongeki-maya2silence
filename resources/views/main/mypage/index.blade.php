@@ -61,14 +61,15 @@
                                     <div id="settings_items_one" class="accordion-collapse collapse show" aria-labelledby="settings_items_one_header">
                                         <div class="accordion-body">
                                             <div class="mb-3">
-                                                <span class="fs-80p">このパラメーターを定数表のURLの最後につけると共有が出来ます</span>
-                                                <div class="input-group mb-3">
+                                                <span class="d-block fs-80p">このパラメーターを定数表のURLの最後につけると共有が出来ます</span>
+                                                <div class="input-group">
                                                     <span class="form-control" id="share_param">{{ "?share={$config['table_shareParam']}" }}</span>
                                                     <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="copyToClipboard()"><span class="fs-80p">COPY</span></button>
                                                 </div>
+                                                <span class="d-block fs-80p">(例) {{ route('main.table', 14) . "?share={$config['table_shareParam']}" }}</span>
                                             </div>
                                             <div class="mb-3">
-                                                <span class="fs-80p">チェックをつけるとアクセスしてもデータにアクセスできるようになります</span>
+                                                <span class="fs-80p">チェックをつけると他の人があなたのデータにアクセスできるようになります</span>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="table_public" id="flexSwitchCheckDefault" {{ $config['table_public'] ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">共有を許可する</label>
