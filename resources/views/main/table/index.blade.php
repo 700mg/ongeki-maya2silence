@@ -18,11 +18,12 @@
         const DATA_SAVE_URL = "{{ route('main.table.save') }}";
         const DATA_LOAD_URL = "{{ route('main.table.load') }}";
         const CSRF_TOKEN = "{{ csrf_token() }}";
+        const SHARE_DATA = {!! empty($data) ? '""' : Js::from($data) !!};
     </script>
 @endsection
 
 @section('title')
-    <span>{{ config("userconst.main.table") }}&nbsp;[Lv{{ $lv }}]</span>
+    <span>{{ config('userconst.main.table') }}&nbsp;[Lv{{ $lv }}]</span>
 @endsection
 
 @section('header_menu')
@@ -47,6 +48,12 @@
             @endforeach
         </div>
     </div>
+    @isset($success)
+        <div class="alert alert-success mb-3" style="margin: 0px auto; max-width: 560px !important;" role="alert">{{ $success }}</div>
+    @endisset
+    @isset($error)
+        <div class="alert alert-danger mb-3" style="margin: 0px auto; max-width: 560px !important;" role="alert">{{ $error }}</div>
+    @endisset
     <div id="song_table">
         @include('main.table.layouts.table_const')
         @include('main.table.layouts.table_version')
