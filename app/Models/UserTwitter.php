@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class UserTwitter extends Model {
     use HasFactory;
     protected $table = 'users_twitter';
 
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\Models\User', "twitter");
+
     }
 }
