@@ -17,3 +17,7 @@ URL: https://ongeki.maya2silence.com
 - visual studio code
 - docker desktop
 - wsl2 (centOS7)
+
+## メモ
+新機能実装: feature-*  
+バグ修正: hotfix-*  

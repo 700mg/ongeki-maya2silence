@@ -1,4 +1,4 @@
 *
-!public/
-!userdata/
+!public
+!userdata/savedata
 !.gitignore
