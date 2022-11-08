@@ -63,7 +63,7 @@
                                             <div class="mb-3">
                                                 <span class="fs-80p">このパラメーターを定数表のURLの最後につけると共有が出来ます</span>
                                                 <div class="input-group mb-3">
-                                                    <span class="form-control" id="share_param">{{ "share?={$config['table_shareParam']}" }}</span>
+                                                    <span class="form-control" id="share_param">{{ "?share={$config['table_shareParam']}" }}</span>
                                                     <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="copyToClipboard()"><span class="fs-80p">COPY</span></button>
                                                 </div>
                                             </div>
@@ -147,6 +147,6 @@
 @endsection
 
 @section('footer')
-    <p>maya2 オンゲキツール (https://ongeki.maya2silence.com/news)</p>
+    <p>maya2 オンゲキツール (https://ongeki.maya2silence.com/mypage)</p>
     <p>不具合･要望等があれば<a href="/#admin" target="_blank" rel="noopener">管理者</a>までご相談ください。</p>
 @endsection
