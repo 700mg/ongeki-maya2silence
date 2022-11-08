@@ -43,7 +43,7 @@ class User extends Authenticatable {
     ];
 
     public function getTwitter() {
-        return $this->hasOne(UserTwitter::class);
+        return $this->hasOne("App\Models\UserTwitter", "userid", "twitter");
     }
 
     public function song_detail() {

@@ -5,7 +5,7 @@
         @if (Auth::user()->admin == '1')
             <li><a href="{{ route('admin.main') }}">管理者ページ</a></li>
         @endif
-        <li style="display: none"><a href="{{ route('user.mypage') }}">マイページ</a></li>
+        <li><a href="{{ route('user.mypage') }}">マイページ</a></li>
         <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();logoutForm.submit();">ログアウト</a></li>
         <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
     @else
