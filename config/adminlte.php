@@ -326,14 +326,14 @@ return [
                 [
                     'text' => '一覧',
                     'route' => 'admin.bookmarklet.list',
-                    'shift' => 'ml-3',
-                    'icon' => 'fas fa-fw fa-list',
+                    'shift' => 'pl-3',
+                    'icon' => '',
                 ],
                 [
                     'text' => '新規登録',
                     'route' => 'admin.bookmarklet.viewRegist',
-                    'shift' => 'ml-3',
-                    'icon' => 'fas fa-fw fa-plus',
+                    'shift' => 'pl-3',
+                    'icon' => '',
                 ],
             ],
         ],
@@ -343,15 +343,13 @@ return [
             'submenu' => [
                 [
                     'text' => '一般ユーザー管理',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => '',
                     'route'  => 'admin.user.list',
-                    'shift' => 'ml-3',
                 ],
                 [
                     'text' => '管理者管理',
-                    'icon' => 'fas fa-fw fa-lock',
+                    'icon' => '',
                     'route'  => 'admin.user.listAdmin',
-                    'shift' => 'ml-3',
                 ],
             ],
         ],
