@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+img.jacket {
+    width: 150px !important;
+}
+
+span.title {
+    max-width: 150px;
+}
+
+
+@media (max-width: 501px) {
+    img.jacket {
+        width: 75px !important;
+    }
+
+    span.title {
+        max-width: 75px;
+        font-size: 75%;
+    }
+}

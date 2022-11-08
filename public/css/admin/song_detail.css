@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+div.section {
+    padding: 12px 0;
+}
+
+div.section>span {
+    margin: 0.5em 0;
+    padding: 0.25em 0.5em;
+    font-size: 125%;
+    font-weight: 600;
+    border: 1px solid #757575;
+    border-left: 0.5em solid #757575;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+    display: block;
+}
+
+div.img_outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #898989;
+}
+
+div.img_outer.editing {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    padding: 5px;
+    position: relative;
+}
+
+div.img_outer.editing::after {
+    content: " ";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    font-size: 50px;
+    align-items: center;
+    justify-content: center;
+    font-family: "Font Awesome 6 Free";
+    background: #fff5;
+    color: #333;
+}
+
+div.img_outer.editing:hover::after {
+    content: "\f03e";
+    background: #fff9;
+}
+
+div.img_outer>img {
+    max-width: 180px;
+    max-height: 180px;
+}
+
+
+input#i_jacket {
+    display: none;
+    opacity: 0;
+}
+
+/*  難易度のやつ */
+
+.difficult_list tr>td {
+    height: 3em;
+    width: 5em;
+    font-size: 120%;
+}
+
+.difficult_list tr>td>input {
+    width: 4em;
+    font-size: 100%;
+}
+
+.difficult_list tr>td:nth-child(1) {
+    font-weight: 600;
+}
+
+
+.basic {
+    background: #a4e381;
+}
+
+.advanced {
+    background: #f7e56d;
+}
+
+.expert {
+    background: #f8aad4;
+}
+
+.master {
+    background: #d4aae7;
+}
+
+.lunatic {
+    background: #ffffff;
+}

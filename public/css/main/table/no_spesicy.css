@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.innerContainer {
+    display: flex;
+    align-items: center;
+}
+
+.innerContainer>img {
+    border-radius: 5px;
+}
+
+.innerContainer>span {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #888;
+    padding: 10px;
+}
+
+.outerContainer {
+    text-align: center;
+}
+
+.outerContainer>a {
+    display: inline-block;
+    margin: 10px;
+    border: 1px #333 solid;
+    padding: 5px;
+    background-color: #efefef;
+    line-height: 0;
+}
+
+.outerContainer>a:hover {
+    background-color: #cacaca;
+}

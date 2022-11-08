@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+dl {
+    margin: auto;
+    max-width: 768px;
+}
+
+dt {
+    font-size: 80%;
+    margin: 0 !important;
+}
+
+dt>div {
+    border: 1px solid #aaa;
+}
+
+dd {
+    border-width: 1px 0px;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-top-color: rgb(119, 119, 119);
+    border-bottom-color: rgb(119, 119, 119);
+    border-image: initial;
+    border-left-style: initial;
+    border-left-color: initial;
+    border-right-style: initial;
+    border-right-color: initial;
+    margin: -1px 0 !important;
+    font-size: 80%;
+}
+
+
+
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th {
+    background: linear-gradient(to bottom, #eee 0, #ccc 100%);
+}
+
+th,
+td {
+    border: 1px solid #aaa;
+    padding: 0 0.5em;
+    vertical-align: middle;
+}
+
+@media screen and (max-width:576px) {
+
+    th,
+    td {
+        font-size: 80%
+    }
+}
