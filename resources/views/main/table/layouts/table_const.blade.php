@@ -19,6 +19,7 @@
 
                                 if ($detail['difficult'] != 'master') {
                                     // idが重複してしまう為、最後にフラグを添える
+                                    $_id .= $detail['difficult'] == 'advanced' ? 'a' : '';
                                     $_id .= $detail['difficult'] == 'expert' ? 'e' : '';
                                     $_id .= $detail['difficult'] == 'lunatic' ? 'l' : '';
                                 }

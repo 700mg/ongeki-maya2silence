@@ -195,25 +195,25 @@
                         <div class="form-row align-items-center">
                             <div class="col">
                                 <label for="inputCity">ノーツ数</label>
-                                <input type="number" name="advanced[notes]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->expert->notes) ? $detail->expert->notes : '' }}">
+                                <input type="number" name="advanced[notes]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->advanced->notes) ? $detail->advanced->notes : '' }}">
                             </div>
                             <div class="col">
                                 <label for="inputCity">ベル</label>
-                                <input type="number" name="advanced[bells]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->expert->bells) ? $detail->expert->bells : '' }}">
+                                <input type="number" name="advanced[bells]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->advanced->bells) ? $detail->advanced->bells : '' }}">
                             </div>
                             <div class="col">
                                 <label for="inputCity">定数</label>
-                                <input type="number" name="advanced[const]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->expert->const) ? $detail->expert->const : '' }}">
+                                <input type="number" name="advanced[const]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->advanced->const) ? $detail->advanced->const : '' }}">
                             </div>
                         </div>
                         <div class="form-row align-items-center">
                             <div class="form-group col">
                                 <label for="inputCity">ノーツ数(前半)</label>
-                                <input type="number" name="advanced[noteA]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->expert->notes_before) ? $detail->expert->notes_before : '' }}">
+                                <input type="number" name="advanced[noteA]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->advanced->notes_before) ? $detail->advanced->notes_before : '' }}">
                             </div>
                             <div class="form-group col">
                                 <label for="inputCity">ノーツ数(後半)</label>
-                                <input type="number" name="advanced[noteB]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->expert->notes_after) ? $detail->expert->notes_after : '' }}">
+                                <input type="number" name="advanced[noteB]" class="form-control" inputmode="numeric" placeholder="未設定" value="{{ !empty($detail->advanced->notes_after) ? $detail->advanced->notes_after : '' }}">
                             </div>
                         </div>
                     </div>
