@@ -63,7 +63,7 @@
                     <div class="invalid-feedback">範囲が不正です</div>
                 </fieldset>
                 <fieldset class="mb-3">
-                    <span style="font-size: small; display: block;">Expert, Lunaticを非表示にできます</span>
+                    <span style="font-size: small; display: block;">一部の対象曲を非表示にできます</span>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="opt_hidden" id="export_hiddenExpert">
                         <label class="form-check-label" for="export_hiddenExpert">Expertを非表示</label>
@@ -71,6 +71,10 @@
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="opt_hidden" id="export_hiddenLunatic">
                         <label class="form-check-label" for="export_hiddenLunatic">Lunaticを非表示</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="opt_hidden" id="export_hiddenVanilla">
+                        <label class="form-check-label" for="export_hiddenVanilla">チェックがない曲を非表示</label>
                     </div>
                 </fieldset>
             </div>

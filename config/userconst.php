@@ -13,6 +13,7 @@ return [
         "calculator" => "テクニカル計算機",
         "database" => "楽曲データベース",
         "news" => "お知らせ",
-        "bookmarklet" => "プログラム置き場"
+        "bookmarklet" => "プログラム置き場",
+        "mypage" => "マイページ"
     ]
 ];

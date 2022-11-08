@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
 use App\Models\ongeki_song_list;
 use App\Models\ongeki_song_list_master;
 use App\Models\ongeki_song_list_expert;
@@ -23,10 +24,15 @@ class TableController extends Controller {
     public function __construct() {
         // Httpリクエストログ収集
         $this->middleware('CollectHttpRequest');
-        //$this->middleware('CollectAccessLog');
     }
 
     public function index($lv) {
+        $param = request("share");
+
+        if (!empty($param))
+            $shareData = $this->getShareData($param, $lv);
+        else $shareData = "";
+
         $song = [];
         $constRange = [
             "14" => ["min" => 14.0, "max" => 15.9],
@@ -64,7 +70,42 @@ class TableController extends Controller {
             "const" => $constRange[$lv],
             "version" => ongeki_version_list::get()->all(),
             "news" => $news,
-        ]);
+        ])->with($shareData);
+    }
+
+    private function getShareData($param, $lv) {
+        try {
+            // 念の為URLとかが紐付いてるリストがあるか確認
+            if (!Storage::exists("userdata/savedata/param_list.json"))
+                throw new \Exception("Err:0001");
+
+            // 読み込み
+            $js = json_decode(Storage::get("userdata/savedata/param_list.json"));
+            if (!property_exists($js, $param))
+                throw new \Exception("データが見つからないか、非公開のユーザーです。");
+
+            // ユーザーデータ読み込み
+            if (!Storage::exists("userdata/savedata/{$js->$param}/config.json"))
+                throw new \Exception("設定ファイルが見つかりませんでした");
+
+            // 公開設定を確認
+            $user_config = json_decode(Storage::get("userdata/savedata/{$js->$param}/config.json"), true);
+            if (!array_key_exists("table_public", $user_config) || !$user_config["table_public"])
+                throw new \Exception("データが見つからないか、非公開のユーザーです。");
+
+            // 読み込み
+            if (!Storage::exists("userdata/savedata/{$js->$param}/table/{$lv}/data.json"))
+                throw new \Exception("Err:0001");
+            $user_data = Storage::get("userdata/savedata/{$js->$param}/table/{$lv}/data.json");
+
+            $user_name = User::find($js->$param)->name;
+            $response = "{$user_name} さんのデータを読み込みました。誤って保存しないよう注意してください。";
+
+            return ["data" => $user_data, "success" => $response];
+        } catch (\Exception $e) {
+            //dd($e->getMessage());
+            return ["error" => $e->getMessage()];
+        }
     }
 
     public function param_invalid() {
@@ -331,8 +372,8 @@ class TableController extends Controller {
             if (empty($lv))
                 throw new \Exception("Lvが指定されてません!!");
 
-            $js = Storage::get("userdata/savedata/{$user_id}/table/{$lv}/data.json");
-            if (!Storage::exists("userdata/savedata/{$user_id}/table/{$lv}/data.json"))
+            $js = Storage::get("userdata/savedata/u-{$user_id}/table/{$lv}/data.json");
+            if (!Storage::exists("userdata/savedata/u-{$user_id}/table/{$lv}/data.json"))
                 throw new \Exception("ファイルが見つかりませんでした");
 
             echo json_encode([

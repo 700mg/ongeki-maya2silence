@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
     jacket_size_range.value = isSP ? 50 : 75;
     checkFlagCount();
     changeJacketSize();
-    loadFromLocal();
+    if (!SHARE_DATA.length) loadFromLocal();
+    else _fill(SHARE_DATA);
     console.log("Initialize done.");
 });
 
@@ -472,7 +473,8 @@ var exportImage = function () {
             r_min: document.querySelector("select[name=range_1]").value,
             r_max: document.querySelector("select[name=range_2]").value,
             hide_exp: export_hiddenExpert.checked.toString(),
-            hide_lun: export_hiddenLunatic.checked.toString()
+            hide_lun: export_hiddenLunatic.checked.toString(),
+            hide_vanilla: export_hiddenVanilla.checked.toString()
         }
     }
 }
@@ -540,7 +542,7 @@ var loadFromServer = function () {
 
     function onFulfilled(response) {
         modal_load_confirm_result.querySelector("[name=result]").innerText = response.message;
-        _f(response.data)
+        _fill(response.data)
     }
     function onRejectresponse(response) {
         modal_load_confirm_result.querySelector("[name=result]").innerText = response.message;
@@ -551,32 +553,6 @@ var loadFromServer = function () {
         bootstrap.Modal.getOrCreateInstance(modal_load_confirm).hide();
         bootstrap.Modal.getOrCreateInstance(modal_load_confirm_result).show();
     }
-    function _f(js) {
-        // 新しく調整するのめんどくさいからコピペする
-        const data = JSON.parse(js);
-        if (!data.length) return;
-
-        let jacket = [].slice.call(document.querySelectorAll(`div.wrapper>div.jacket`));
-        jacket.forEach(e => {
-            let sid = e.parentNode.dataset.sid,
-                x;
-            if (x = data.find(e => { return e.sid == sid })) {
-                const regExp = new RegExp(/\bchecked\d/);
-                const regMatch = e.className.match(regExp);
-                // 一度クラスを消す
-                if (regMatch) e.classList.remove(regMatch);
-                e.classList.add(`checked${x.chk}`);
-                e.parentNode.dataset.flag = x.chk;
-                slashColor(e.nextElementSibling, x.chk);
-            } else {
-                for (let i = 1; i <= 4; i++) {
-                    e.classList.remove("checked" + i);
-                    slashColor(e.nextElementSibling, 0);
-                }
-            }
-        });
-        checkFlagCount();
-    }
 }
 
 // fetch用ハンドラ判別関数
@@ -585,4 +561,31 @@ var handleErrors = function (response) {
         return response.json().then(function (err) { throw Error(err.message) });
     else
         return response;
+}
+
+var _fill = function (js) {
+    // 新しく調整するのめんどくさいからコピペする
+    const data = JSON.parse(js);
+    if (!data.length) return;
+
+    let jacket = [].slice.call(document.querySelectorAll(`div.wrapper>div.jacket`));
+    jacket.forEach(e => {
+        let sid = e.parentNode.dataset.sid,
+            x;
+        if (x = data.find(e => { return e.sid == sid })) {
+            const regExp = new RegExp(/\bchecked\d/);
+            const regMatch = e.className.match(regExp);
+            // 一度クラスを消す
+            if (regMatch) e.classList.remove(regMatch);
+            e.classList.add(`checked${x.chk}`);
+            e.parentNode.dataset.flag = x.chk;
+            slashColor(e.nextElementSibling, x.chk);
+        } else {
+            for (let i = 1; i <= 4; i++) {
+                e.classList.remove("checked" + i);
+                slashColor(e.nextElementSibling, 0);
+            }
+        }
+    });
+    checkFlagCount();
 }

@@ -99,7 +99,7 @@ class TwitterController extends Controller {
                     $db_twitter = UserTwitter::where("userid", $twitterUser->getId())->first();
                     $db_twitter->name = "@" . $twitterUser->getName();
                     $db_twitter->nickname = $twitterUser->getNickname();
-                    $db_twitter->avatar = $twitterUser->getAvatar();
+                    $db_twitter->avatar = str_replace("_normal", "", $twitterUser->getAvatar());
                     $db_twitter->save();
 
                     // 表示用のユーザー名も更新しておく

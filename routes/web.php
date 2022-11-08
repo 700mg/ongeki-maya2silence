@@ -10,6 +10,7 @@ use App\Http\Controllers\Main\NewsController;
 use App\Http\Controllers\Main\DatabaseController;
 use App\Http\Controllers\Main\UserController;
 use App\Http\Controllers\Main\BookmarkletController;
+use App\Http\Controllers\Main\MypageController;
 
 use App\Http\Controllers\Admin\AdminSongController;
 use App\Http\Controllers\Admin\AdminNewsController;
@@ -45,7 +46,6 @@ Route::get('/table/export', [TableController::class, "exportImage"])->name("main
 Route::post('/table/user/save', [TableController::class, "saveCheckToServer"])->middleware("checkLogin")->middleware('CollectAccessLog')->name("main.table.save");
 Route::post('/table/user/load', [TableController::class, "loadCheckFromServer"])->middleware("checkLogin")->middleware('CollectAccessLog')->name("main.table.load");
 
-
 Route::get('/table/{lv}', [TableController::class, "index"])->where("lv", "^1[1234]$")->middleware('CollectAccessLog')->name("main.table");
 Route::get('/table/{lv?}', [TableController::class, "param_invalid"])->name("main.table.noLv");
 
@@ -70,9 +70,10 @@ Route::get("/song_data/{id}", [DatabaseController::class, "songData"])->middlewa
 Route::get("/bookmarklet/list", [BookmarkletController::class, "list"])->name("bookmarklet.list");
 Route::get("/bookmarklet/{id}", [BookmarkletController::class, "detail"])->name("bookmarklet.detail");
 
-
 // ユーザーマイページ
-Route::get("/user/mypage", [UserController::class, "mypage"])->middleware('CollectAccessLog')->name("user.mypage");
+Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->middleware("auth")->name("user.mypage");
+Route::post("/user/mypage/update", [MypageController::class, "update"])->middleware('CollectAccessLog')->middleware("auth")->name("user.mypage.update");
+//Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->name("user.mypage");
 
 /*--------------------------------*/
 /*--  以下管理ページルーティング  --*/
@@ -105,11 +106,13 @@ Route::post("/admin/news/delete", [AdminNewsController::class, "delete"])->middl
 // ログ解析
 Route::get("/admin/log/access", [AnalyzeLogController::class, "AnalyzeAccessLog"])->middleware("checkAdmin")->name("admin.log.access");
 
+// ユーザー管理
 Route::get("/admin/user/list", [OwnerUserController::class, "list"])->middleware("checkAdmin")->name("admin.user.list");
 Route::get("/admin/user/{id}", [OwnerUserController::class, "detail"])->middleware("checkAdmin")->name("admin.user.detail");
 Route::get("/admin/user/list/admin", [OwnerUserController::class, "viewListAdmin"])->middleware("checkAdmin")->middleware("checkOwner")->name("admin.user.listAdmin");
 Route::post("/admin/user/update", [OwnerUserController::class, "update"])->middleware("checkAdmin")->middleware("checkOwner")->name("admin.user.update");
 
+// ブックマークレットのやつ
 Route::get("/admin/bookmarklet/list", [AdminBookmarkletController::class, "list"])->middleware("checkAdmin")->name("admin.bookmarklet.list");
 Route::get("/admin/bookmarklet/{id}", [AdminBookmarkletController::class, "detail"])->where("id", "^[0-9]+")->middleware("checkAdmin")->name("admin.bookmarklet.detail");
 Route::get("/admin/bookmarklet/regist", [AdminBookmarkletController::class, "viewRegist"])->middleware("checkAdmin")->name("admin.bookmarklet.viewRegist");
@@ -117,8 +120,6 @@ Route::get('/admin/bookmarklet/regist/success', [AdminBookmarkletController::cla
 Route::post("/admin/bookmarklet/regist", [AdminBookmarkletController::class, "regist"])->middleware("checkAdmin")->name("admin.bookmarklet.regist");
 Route::post("/admin/bookmarklet/update", [AdminBookmarkletController::class, "update"])->middleware("checkAdmin")->name("admin.bookmarklet.update");
 Route::post("/admin/bookmarklet/delete", [AdminBookmarkletController::class, "delete"])->middleware("checkAdmin")->name("admin.bookmarklet.delete");
-
-
 
 // 認証
 Auth::routes();
