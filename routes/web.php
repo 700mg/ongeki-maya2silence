@@ -71,8 +71,8 @@ Route::get("/bookmarklet/list", [BookmarkletController::class, "list"])->name("b
 Route::get("/bookmarklet/{id}", [BookmarkletController::class, "detail"])->name("bookmarklet.detail");
 
 // ユーザーマイページ
-Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->name("user.mypage");
-Route::post("/user/mypage/update", [MypageController::class, "update"])->middleware('CollectAccessLog')->name("user.mypage.update");
+Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->middleware("auth")->name("user.mypage");
+Route::post("/user/mypage/update", [MypageController::class, "update"])->middleware('CollectAccessLog')->middleware("auth")->name("user.mypage.update");
 //Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->name("user.mypage");
 
 /*--------------------------------*/

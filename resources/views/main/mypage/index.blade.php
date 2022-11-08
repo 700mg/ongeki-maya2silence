@@ -8,6 +8,19 @@
     <link href="/css/main/mypage/mypage.css" rel="stylesheet">
 @endsection
 
+@section('script')
+    <script>
+        //input.copyの値をクリップボードにコピーする
+        const copyToClipboard = function() {
+            navigator.clipboard.writeText(share_param.innerText).then(() => {
+                window.alert('コピーしました');
+            }, () => {
+                window.alert('コピーできませんでした');
+            });
+        };
+    </script>
+@endsection
+
 @section('content')
     <div class="p-3">
         @if (session('success'))
@@ -50,8 +63,8 @@
                                             <div class="mb-3">
                                                 <span class="fs-80p">このパラメーターを定数表のURLの最後につけると共有が出来ます</span>
                                                 <div class="input-group mb-3">
-                                                    <span class="form-control">{{ "share?={$config['table_shareParam']}" }}</span>
-                                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"><span class="fs-80p">COPY</span></button>
+                                                    <span class="form-control" id="share_param">{{ "share?={$config['table_shareParam']}" }}</span>
+                                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="copyToClipboard()"><span class="fs-80p">COPY</span></button>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -84,9 +97,12 @@
                                     </h2>
                                     <div id="settings_items_three" class="accordion-collapse collapse show" aria-labelledby="settings_items_three_header">
                                         <div class="accordion-body">
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-text input_value">ID</div>
-                                                <input class="form-control" type="number" inputmode="numeric" name="osl_id" value="{{ empty($config['osl_id']) ? '' : $config['osl_id'] }}" />
+                                            <div class="mb-3">
+                                                <span class="fs-80p">OngekiScoreLogのIDを登録できます。現在特に意味はありません。</span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-text input_value">ID</div>
+                                                    <input class="form-control" type="number" inputmode="numeric" name="osl_id" value="{{ empty($config['osl_id']) ? '' : $config['osl_id'] }}" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
