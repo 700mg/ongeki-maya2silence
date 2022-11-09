@@ -10,11 +10,12 @@ use App\Models\AccessLog;
 class AdminDashboardController extends Controller {
     //
     public function index() {
-        $table_weekly = $this->getTableWeeklyAccess();
-        $calc_weekly = $this->getCalcWeeklyAccess();
-        $table_weekly_total = AccessLog::where("to", "table")->whereYear("created_at", date("Y"))->whereMonth("created_at", date("m"))->count();
-        $calc_weekly_total = AccessLog::where("to", "calculator")->whereYear("created_at", date("Y"))->whereMonth("created_at", date("m"))->count();
-        return view("admin.dashboard", compact("table_weekly", "calc_weekly", "table_weekly_total", "calc_weekly_total"));
+        $table_daily = $this->getTableDailyAccess();
+        $calc_daily = $this->getCalcDailyAccess();
+        $news_daily = $this->getNewsDailyAccess();
+        $db_daily = $this->getDBDailyAccess();
+        $mypage_daily = AccessLog::where("param", "mypage")->whereDay("created_at", date("d"))->count();
+        return view("admin.dashboard", compact("table_daily", "calc_daily", "news_daily", "db_daily"));
     }
 
     private function getDailyData() {
@@ -27,7 +28,44 @@ class AdminDashboardController extends Controller {
         return $db;
     }
 
-    private function getTableWeeklyAccess() {
+    private function getTableDailyAccess() {
+        $count = [];
+        $database = AccessLog::where("to", "table")->whereDay("created_at", date("d"))->get();
+        foreach ($database as $db) {
+            $label = empty($db->param) ? route("main.table.noLv") : route("main.table", $db->param);
+            if (empty($count[$label]))  $count[$label] = 0;
+            $count[$label] += 1;
+        }
+        return $count;
+    }
+
+    private function getCalcDailyAccess() {
+        return [route("main.calculator") => AccessLog::where("to", "calculator")->whereDay("created_at", date("d"))->count()];
+    }
+
+    private function getNewsDailyAccess() {
+        $count = [];
+        $database = AccessLog::where("to", "news")->whereDay("created_at", date("d"))->get();
+        foreach ($database as $db) {
+            $label = empty($db->param) ? route("news.list") : route("news.view", $db->param);
+            if (empty($count[$label]))  $count[$label] = 0;
+            $count[$label] += 1;
+        }
+        return $count;
+    }
+
+    private function getDBDailyAccess() {
+        $count = [];
+        $database = AccessLog::where("to", "song_data")->whereDay("created_at", date("d"))->get();
+        foreach ($database as $db) {
+            $label = empty($db->param) ? route("database.list") : route("database.song", $db->param);
+            if (empty($count[$label]))  $count[$label] = 0;
+            $count[$label] += 1;
+        }
+        return $count;
+    }
+
+    private function getTableWeeklyAccessChart() {
         // 各グラフの設定
         $levels = ["11", "12", "13", "14"];
         // グラフの色
@@ -61,7 +99,7 @@ class AdminDashboardController extends Controller {
         ];
     }
 
-    private function getCalcWeeklyAccess() {
+    private function getCalcWeeklyAccessChart() {
         // 各グラフの設定
         $label = "計算機";
         // グラフの色
