@@ -62,7 +62,7 @@ body {
     min-height: 100vh;
 }
 
-div.container>table {
+div#song_table>table {
     width: 100%;
 }
 
