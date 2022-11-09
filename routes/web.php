@@ -111,6 +111,7 @@ Route::get("/admin/user/list", [OwnerUserController::class, "list"])->middleware
 Route::get("/admin/user/{id}", [OwnerUserController::class, "detail"])->middleware("checkAdmin")->name("admin.user.detail");
 Route::get("/admin/user/list/admin", [OwnerUserController::class, "viewListAdmin"])->middleware("checkAdmin")->middleware("checkOwner")->name("admin.user.listAdmin");
 Route::post("/admin/user/update", [OwnerUserController::class, "update"])->middleware("checkAdmin")->middleware("checkOwner")->name("admin.user.update");
+Route::post("/admin/user/conf/update/{id}", [OwnerUserController::class, "confUpdate"])->middleware("checkAdmin")->middleware("checkOwner")->name("admin.user.conf.update");
 
 // ブックマークレットのやつ
 Route::get("/admin/bookmarklet/list", [AdminBookmarkletController::class, "list"])->middleware("checkAdmin")->name("admin.bookmarklet.list");

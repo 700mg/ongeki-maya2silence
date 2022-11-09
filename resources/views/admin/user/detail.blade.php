@@ -20,7 +20,7 @@
             <form class="detail form" method="POST" action={{ route('admin.user.update') }}>
                 @csrf
         @endif
-        <fieldset style="max-width: 478px; margin: 0 auto;" {{ Auth::user()->owner ? '' : 'disabled' }}>
+        <fieldset style="max-width: 478px;" {{ Auth::user()->owner ? '' : 'disabled' }}>
             {{-- DB ID --}}
             <input type="hidden" name="id" value="{{ $user->id }}">
             {{-- Name --}}
@@ -84,6 +84,50 @@
                         <option value="0" {{ !$user->banned ? 'selected' : '' }}>NO</option>
                         <option value="1" {{ $user->banned ? 'selected' : '' }}>YES</option>
                     </select>
+                @endif
+            </div>
+            @if (Auth::user()->owner)
+                <div class="text-right mt-3">
+                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                </div>
+            @endif
+        </fieldset>
+        @if (Auth::user()->owner)
+            </form>
+        @endif
+    </div>
+    <div class="section">
+        <span>各種設定</span>
+        <p class="fs-80p">無闇矢鱈に弄らないよう注意。</p>
+        @if (Auth::user()->owner)
+            <form class="detail form" method="POST" action={{ route('admin.user.conf.update', Request::route()->id) }}>
+                @csrf
+                <input type="hidden" name="userid" value="{{ Request::route()->id }}" />
+        @endif
+        <fieldset style="max-width: 478px;" {{ Auth::user()->owner ? '' : 'disabled' }}>
+            {{-- Table Share Param --}}
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Table Share Param</span>
+                </div>
+                @if (Auth::user()->owner)
+                    <input class="form-control" name="table_shareParam" type="text" maxlength="8" pattern="^[0-9a-zA-Z]+$" value="{{ empty($config['table_shareParam']) ? '' : $config['table_shareParam'] }}" />
+                @else
+                    <div class="form-control">{{ empty($config['table_shareParam']) ? '' : $config['table_shareParam'] }}</div>
+                @endif
+            </div>
+            {{-- Table Public Setting --}}
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Table Public Settings</span>
+                </div>
+                @if (Auth::user()->owner)
+                    <select class="custom-select" name="table_public">
+                        <option value="0" {{ !$config['table_public'] ? 'selected' : '' }}>NO</option>
+                        <option value="1" {{ $config['table_public'] ? 'selected' : '' }}>YES</option>
+                    </select>
+                @else
+                    <div class="form-control">{{ !$config['table_public'] ? 'NO' : 'YES' }}</div>
                 @endif
             </div>
             @if (Auth::user()->owner)

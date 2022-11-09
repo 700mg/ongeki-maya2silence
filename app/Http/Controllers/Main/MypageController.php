@@ -29,7 +29,10 @@ class MypageController extends Controller {
             if (Storage::exists("userdata/savedata/{$user_id}/config.json"))
                 throw new \Exception("既に存在します。");
 
-            $user = json_decode(Storage::get("userdata/savedata/param_list.json"), true);
+            if (!Storage::exists("userdata/savedata/param_list.json"))
+                $user = [];
+            else
+                $user = json_decode(Storage::get("userdata/savedata/param_list.json"), true);
 
             // シェア用のパラメータ作成
             $param = (function () use ($user) {
