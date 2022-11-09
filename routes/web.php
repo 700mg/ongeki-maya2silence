@@ -47,15 +47,15 @@ Route::post('/table/user/save', [TableController::class, "saveCheckToServer"])->
 Route::post('/table/user/load', [TableController::class, "loadCheckFromServer"])->middleware("checkLogin")->middleware('CollectAccessLog')->name("main.table.load");
 
 Route::get('/table/{lv}', [TableController::class, "index"])->where("lv", "^1[1234]$")->middleware('CollectAccessLog')->name("main.table");
-Route::get('/table/{lv?}', [TableController::class, "param_invalid"])->name("main.table.noLv");
+Route::get('/table/{lv?}', [TableController::class, "param_invalid"])->middleware('CollectAccessLog')->name("main.table.noLv");
 
 // 計算機
 Route::get("/calculator", [CalculatorController::class, "index"])->middleware('CollectAccessLog')->name("main.calculator");
 
 // 各種楽曲情報取得用
-Route::post("/song/detail", [SongController::class, "getSongDetail"])->name("song.detail");
-Route::post("/song/data", [SongController::class, "getSongData"])->name("song.data");
-Route::post("/song/search", [SongController::class, "searchSongData"])->name("song.search");
+Route::post("/song/detail", [SongController::class, "getSongDetail"])->middleware('CollectAccessLog')->name("song.detail");
+Route::post("/song/data", [SongController::class, "getSongData"])->middleware('CollectAccessLog')->name("song.data");
+Route::post("/song/search", [SongController::class, "searchSongData"])->middleware('CollectAccessLog')->name("song.search");
 
 // お知らせページ
 Route::get("/news", [NewsController::class, "list"])->middleware('CollectAccessLog')->name("news.list");
@@ -67,8 +67,8 @@ Route::post("/song_data/search", [DatabaseController::class, "search"])->middlew
 Route::get("/song_data/{id}", [DatabaseController::class, "songData"])->middleware('CollectAccessLog')->name("database.song");
 
 //
-Route::get("/bookmarklet/list", [BookmarkletController::class, "list"])->name("bookmarklet.list");
-Route::get("/bookmarklet/{id}", [BookmarkletController::class, "detail"])->name("bookmarklet.detail");
+Route::get("/bookmarklet/list", [BookmarkletController::class, "list"])->middleware('CollectAccessLog')->name("bookmarklet.list");
+Route::get("/bookmarklet/{id}", [BookmarkletController::class, "detail"])->middleware('CollectAccessLog')->name("bookmarklet.detail");
 
 // ユーザーマイページ
 Route::get("/user/mypage", [MypageController::class, "view"])->middleware('CollectAccessLog')->middleware("auth")->name("user.mypage");
