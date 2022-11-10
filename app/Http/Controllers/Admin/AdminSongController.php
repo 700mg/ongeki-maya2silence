@@ -232,8 +232,24 @@ class AdminSongController extends Controller {
     }
 
     public function delete(AdminSongDelete $request) {
-        $song = ongeki_song_list::where("song_id", $request->song_id)->firstOrFail();
-        $song->delete();
-        return redirect()->route("admin.songs.list")->with("success_message", "削除に成功しました");
+        try {
+            $song = ongeki_song_list::where("song_id", $request->song_id)->firstOrFail();
+            if (empty($song)) throw new \Exception("楽曲が見つかりませんでした");
+
+            if (!empty($song->master)) $song->master->delete();
+            if (!empty($song->expert)) $song->expert->delete();
+            if (!empty($song->advanced)) $song->advanced->delete();
+            if (!empty($song->basic)) $song->basic->delete();
+            if (!empty($song->lunatic)) $song->lunatic->delete();
+
+            if (empty($song->master) && empty($song->expert) && empty($song->advanced) && empty($song->basic) && empty($song->lunatic))
+                $song->delete();
+            else
+                throw new \Exception("削除できませんでした");
+
+            return redirect()->route("admin.songs.list")->with("success_message", "削除に成功しました");
+        } catch (\Exception $err) {
+            return redirect()->route("admin.songs.list")->with("error_message", $err->getMessage());
+        }
     }
 }

@@ -95,7 +95,7 @@ class TableController extends Controller {
 
             // 読み込み
             if (!Storage::exists("userdata/savedata/{$js->$param}/table/{$lv}.json"))
-                throw new \Exception("Err:0001");
+                throw new \Exception("データが見つからないか、非公開のユーザーです。");
             $user_data = Storage::get("userdata/savedata/{$js->$param}/table/{$lv}.json");
 
             $user_name = User::find($js->$param)->name;

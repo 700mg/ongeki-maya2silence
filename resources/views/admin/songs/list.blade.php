@@ -19,6 +19,9 @@
     @if (session('success_message'))
         <div class="alert alert-success" role="alert">{{ session('success_message') }}</div>
     @endif
+    @if (session('error_message'))
+        <div class="alert alert-danger" role="alert">{{ session('error_message') }}</div>
+    @endif
 
     <a class="collapsed btn btn-outline-secondary d-inline-flex align-items-center mb-2" data-bs-toggle="collapse" href="#search" aria-controls="#search" aria-expanded="false">
         絞込み検索<span class="collapse_icon"></span>
