@@ -5,7 +5,7 @@
 @section('content')
     <div class="card card-info m-2">
         <div class="card-header">
-            <h3 class="card-title">アクセスアナライザー</h3>
+            <h3 class="card-title">今日のアクセス</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -14,7 +14,8 @@
         </div>
         <div class="card-body">
             <div class="">
-                <h3>{{ date("Y/m/d") }}</h3>
+                <h3>{{ date('Y/m/d') }}</h3>
+                <p>合計: {{ array_sum($today_access) }}</p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -23,32 +24,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- TABLE ACCESS --}}
-                        @foreach ($table_daily as $key => $table)
+                        {{-- ACCESS LOG --}}
+                        @foreach ($today_access as $key => $value)
                             <tr scope="row">
                                 <th><a href="{{ $key }}">{{ str_replace(Request::getUriForPath(''), '', $key) }}</a></th>
-                                <td>{{ $table }}</td>
-                            </tr>
-                        @endforeach
-                        {{-- CALCULATOR ACCESS --}}
-                        @foreach ($calc_daily as $key => $calc)
-                            <tr scope="row">
-                                <th><a href="{{ $key }}">{{ str_replace(Request::getUriForPath(''), '', $key) }}</a></th>
-                                <td>{{ $calc }}</td>
-                            </tr>
-                        @endforeach
-                        {{-- NEWS ACCESS --}}
-                        @foreach ($news_daily as $key => $news)
-                            <tr scope="row">
-                                <th><a href="{{ $key }}">{{ str_replace(Request::getUriForPath(''), '', $key) }}</a></th>
-                                <td>{{ $news }}</td>
-                            </tr>
-                        @endforeach
-                        {{-- DATABASE ACCESS --}}
-                        @foreach ($db_daily as $key => $db)
-                            <tr scope="row">
-                                <th><a href="{{ $key }}">{{ str_replace(Request::getUriForPath(''), '', $key) }}</a></th>
-                                <td>{{ $db }}</td>
+                                <td>{{ $value }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -10,12 +10,16 @@ use App\Models\AccessLog;
 class AdminDashboardController extends Controller {
     //
     public function index() {
-        $table_daily = $this->getTableDailyAccess();
-        $calc_daily = $this->getCalcDailyAccess();
-        $news_daily = $this->getNewsDailyAccess();
-        $db_daily = $this->getDBDailyAccess();
-        $mypage_daily = AccessLog::where("param", "mypage")->whereDay("created_at", date("d"))->count();
-        return view("admin.dashboard", compact("table_daily", "calc_daily", "news_daily", "db_daily"));
+        $today_access = [];
+        $today_access += $this->getTableDailyAccess();
+        $today_access += $this->getCalcDailyAccess();
+        $today_access += $this->getNewsDailyAccess();
+        $today_access += $this->getDBDailyAccess();
+        $today_access += $this->getMypageDailyAccess();
+
+        arsort($today_access, SORT_NUMERIC);
+
+        return view("admin.dashboard", compact("today_access"));
     }
 
     private function getDailyData() {
@@ -52,6 +56,10 @@ class AdminDashboardController extends Controller {
             $count[$label] += 1;
         }
         return $count;
+    }
+
+    private function getMypageDailyAccess() {
+        return [route("user.mypage") => AccessLog::where("param", "mypage")->whereDay("created_at", date("d"))->count()];
     }
 
     private function getDBDailyAccess() {
