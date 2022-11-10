@@ -94,9 +94,9 @@ class TableController extends Controller {
                 throw new \Exception("データが見つからないか、非公開のユーザーです。");
 
             // 読み込み
-            if (!Storage::exists("userdata/savedata/{$js->$param}/table/{$lv}/data.json"))
+            if (!Storage::exists("userdata/savedata/{$js->$param}/table/{$lv}.json"))
                 throw new \Exception("Err:0001");
-            $user_data = Storage::get("userdata/savedata/{$js->$param}/table/{$lv}/data.json");
+            $user_data = Storage::get("userdata/savedata/{$js->$param}/table/{$lv}.json");
 
             $user_name = User::find($js->$param)->name;
             $response = "{$user_name} さんのデータを読み込みました。誤って保存しないよう注意してください。";
@@ -113,8 +113,9 @@ class TableController extends Controller {
     }
 
     private function organizedSong($element, $diffucult) {
-        $songDetail = ongeki_song_list::where("song_id", $element->song_id)->first();
-        if (empty($songDetail->deleted) || $songDetail->deleted != "1")
+        try {
+            $songDetail = ongeki_song_list::where("song_id", $element->song_id)->first();
+            if (empty($songDetail) || ($songDetail->deleted == "1")) throw new \Exception();
             return [
                 "title" => $songDetail->title,
                 "index" => $songDetail->id,
@@ -123,8 +124,9 @@ class TableController extends Controller {
                 "category" => ongeki_category_list::find($songDetail->category)->category,
                 "version" => ongeki_version_list::find($songDetail->version)->version
             ];
-        else
+        } catch (\Exception $err) {
             return false;
+        }
     }
 
     public function exportImage(Request $request) {
@@ -349,8 +351,8 @@ class TableController extends Controller {
             if (empty($lv))
                 throw new \Exception("Lvが指定されてません!!");
 
-            Storage::put("userdata/savedata/{$user_id}/table/{$lv}/data.json", $js);
-            if (!Storage::exists("userdata/savedata/{$user_id}/table/{$lv}/data.json"))
+            Storage::put("userdata/savedata/{$user_id}/table/{$lv}.json", $js);
+            if (!Storage::exists("userdata/savedata/{$user_id}/table/{$lv}.json"))
                 throw new \Exception("ファイルが作成できませんでした");
 
             echo json_encode([
@@ -372,8 +374,8 @@ class TableController extends Controller {
             if (empty($lv))
                 throw new \Exception("Lvが指定されてません!!");
 
-            $js = Storage::get("userdata/savedata/u-{$user_id}/table/{$lv}/data.json");
-            if (!Storage::exists("userdata/savedata/u-{$user_id}/table/{$lv}/data.json"))
+            $js = Storage::get("userdata/savedata/{$user_id}/table/{$lv}.json");
+            if (!Storage::exists("userdata/savedata/{$user_id}/table/{$lv}.json"))
                 throw new \Exception("ファイルが見つかりませんでした");
 
             echo json_encode([
