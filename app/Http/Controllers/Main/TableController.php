@@ -114,7 +114,7 @@ class TableController extends Controller {
 
     private function organizedSong($element, $diffucult) {
         $songDetail = ongeki_song_list::where("song_id", $element->song_id)->first();
-        if ($songDetail->deleted != "1")
+        if (empty($songDetail->deleted) || $songDetail->deleted != "1")
             return [
                 "title" => $songDetail->title,
                 "index" => $songDetail->id,
