@@ -320,6 +320,9 @@ table {
 
 img#export_image {
     width: 100%;
+    -webkit-user-select: auto !important;
+    -webkit-touch-callout: default !important;
+    user-select: auto !important;
 }
 
 @keyframes spin {

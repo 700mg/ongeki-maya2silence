@@ -1,7 +1,7 @@
 @extends('main.layouts.template_b')
 
 @section('css')
-    <link rel="stylesheet" href="/css/main/table/table.css" title="table_style" />
+    <link rel="stylesheet" href="{{ "/css/main/table/table.css?" . date('YmdHis') }} " title="table_style" />
 @endsection
 
 @section('script')
