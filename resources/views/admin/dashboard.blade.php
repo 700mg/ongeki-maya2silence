@@ -1,93 +1,119 @@
 @extends('adminlte::page')
-
 @section('title', '管理画面ダッシュボード(仮)')
+@inject('aa', 'App\Http\Controllers\Admin\AccessAnalyzeController')
 
 @section('content')
-    <div class="card card-info m-2">
-        <div class="card-header">
-            <h3 class="card-title">今日のアクセス</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="">
-                <h3>{{ date('Y/m/d') }}</h3>
-                <p>合計: {{ array_sum($today_access) }}</p>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">アクセス数</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- ACCESS LOG --}}
-                        @foreach ($today_access as $key => $value)
-                            <tr scope="row">
-                                <th><a href="{{ $key }}">{{ str_replace(Request::getUriForPath(''), '', $key) }}</a></th>
-                                <td>{{ $value }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    {{-- 動作が非常に重いから一度無効化する --}}
-    {{--
     <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">定数表 月間アクセス数</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
+            <h3 class="card-title">今日のアクセス</h3>
         </div>
         <div class="card-body">
-            <div class="chart">
-                <span>累計アクセス:</span>
-                <canvas id="myChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 335px;" width="418" height="312" class="chartjs-render-monitor"></canvas>
+            <div class="counter_header">今日の合計アクセス数
+                <span class="counter_body">{{ $count['daily'] }}</span>
             </div>
+            {{-- 今日1日のアクセス内訳 --}}
+            <div id="chart_access_today"></div>
         </div>
     </div>
-    <div class="card card-success">
+    <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">計算機 月間アクセス数</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
+            <h3 class="card-title">今月の合計アクセス</h3>
         </div>
         <div class="card-body">
-            <div class="chart">
-                <span>累計アクセス:</span>
-                <canvas id="myChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 335px;" width="418" height="312" class="chartjs-render-monitor"></canvas>
+            <div class="counter_header">今月の合計アクセス数
+                <span class="counter_body">{{ $count['monthly'] }}</span>
             </div>
+            {{-- 今月のアクセス合計 --}}
+            <div id="chart_access_month"></div>
         </div>
     </div>
-    --}}
+    <div id="google-line-chart"></div>
 @stop
 
 @section('css')
+    <link rel="stylesheet" href="/css/admin/dashboard.min.css" />
+    <style>
+        .counter_header {
+            font-size: .75rem;
+            font-weight: bold;
+            color: #555;
+        }
 
+        .counter_body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.25rem;
+            margin-left: .25rem;
+            font-weight: bold;
+            color: #111;
+        }
+    </style>
 @stop
 
 @section('js')
-    {{--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
 
-    <script type="text/javascript">
-        const ctx = document.getElementById("myChart").getContext("2d");
-        const data = {{ Js::from($table_weekly) }};
-        const myChart = new Chart(ctx, data);
-        const ctx2 = document.getElementById("myChart2").getContext("2d");
-        const data2 = {{ Js::from($calc_weekly) }};
-        const myChart2 = new Chart(ctx2, data2);
+        async function drawDailyChart() {
+            const gid = "chart_access_today";
+            const options = {
+                'title': '今日のアクセス内訳',
+                'width': document.getElementById("chart_access_today").width,
+                "is3D": true,
+            };
+            const type = "PieChart";
+            let rows = await getChartData("daily");
+            drawChart(rows, options, gid, type);
+        }
+
+        async function drawMonthChart() {
+            const gid = "chart_access_month";
+            const options = {
+                'title': '今月のアクセス詳細',
+                'width': document.getElementById("chart_access_today").width,
+                "legend": 'none',
+                "is3D": true,
+            };
+            const type = "ColumnChart";
+
+            let rows = await getChartData("month");
+            drawChart(rows, options, gid, type);
+        }
+
+        function drawChart(rows, options, gid, type) {
+            // Create the data table.
+            let data = new google.visualization.DataTable();
+            data.addColumn('string', "アクセス先");
+            data.addColumn('number', "アクセス数");
+            data.addRows(rows);
+
+            // Instantiate and draw our chart, passing in some options.
+            if (type == "PieChart")
+                var chart = new google.visualization.PieChart(document.getElementById(gid));
+            else if (type == "ColumnChart")
+                var chart = new google.visualization.ColumnChart(document.getElementById(gid));
+
+            chart.draw(data, options);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawDailyChart);
+            google.charts.setOnLoadCallback(drawMonthChart);
+        });
+
+        function getChartData(key) {
+            return fetch("/admin/access_analyze/get/" + key).then((res) => {
+                return res.json();
+            });
+        }
+
+        var handleErrors = function(response) {
+            return (response.ok) ? response : response.json().then(function(err) {
+                throw Error(err.message)
+            });
+        }
     </script>
-    --}}
 @stop

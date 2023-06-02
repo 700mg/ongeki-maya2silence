@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AnalyzeLogController;
 use App\Http\Controllers\Admin\AdminBookmarkletController;
-
+use App\Http\Controllers\Admin\AccessAnalyzeController;
 use App\Http\Controllers\Admin\OwnerUserController;
 
 use App\Models\news_infomation;
@@ -79,7 +79,7 @@ Route::post("/user/mypage/update", [MypageController::class, "update"])->middlew
 /*--  以下管理ページルーティング  --*/
 /*--------------------------------*/
 // 管理画面
-Route::get('/admin', [AdminDashboardController::class, "index"])->name("admin.main")->middleware("checkAdmin");
+Route::get('/admin', [AdminDashboardController::class, "view"])->name("admin.main")->middleware("checkAdmin");
 
 // 楽曲管理
 Route::get('/admin/songs', [AdminSongController::class, "list"])->middleware("checkAdmin")->name("admin.songs.list");
@@ -121,6 +121,8 @@ Route::get('/admin/bookmarklet/regist/success', [AdminBookmarkletController::cla
 Route::post("/admin/bookmarklet/regist", [AdminBookmarkletController::class, "regist"])->middleware("checkAdmin")->name("admin.bookmarklet.regist");
 Route::post("/admin/bookmarklet/update", [AdminBookmarkletController::class, "update"])->middleware("checkAdmin")->name("admin.bookmarklet.update");
 Route::post("/admin/bookmarklet/delete", [AdminBookmarkletController::class, "delete"])->middleware("checkAdmin")->name("admin.bookmarklet.delete");
+
+Route::get('/admin/access_analyze/get/{param}', [AccessAnalyzeController::class, "getData"])->name("admin.access_analyze.get");
 
 // 認証
 Auth::routes();
