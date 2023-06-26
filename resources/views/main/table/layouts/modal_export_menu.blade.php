@@ -76,6 +76,10 @@
                         <input class="form-check-input" type="checkbox" name="opt_hidden" id="export_hiddenVanilla">
                         <label class="form-check-label" for="export_hiddenVanilla">チェックがない曲を非表示</label>
                     </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="opt_hidden" id="export_hiddenCheck">
+                        <label class="form-check-label" for="export_hiddenCheck">チェックがある曲を非表示</label>
+                    </div>
                 </fieldset>
             </div>
             <div class="modal-footer">

@@ -5,7 +5,7 @@
 @endsection
 
 @section('script')
-    <script src="/script/main/table/table.js"></script>
+    <script src="/script/main/table/table.js?{{ date('yymmdd') }}"></script>
     <script src="/script/main/table/long-press-event.min.js"></script>
     <script type="text/javascript">
         const lv = {{ $lv }};

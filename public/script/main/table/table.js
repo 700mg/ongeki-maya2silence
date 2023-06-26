@@ -435,6 +435,10 @@ var fillFromOSL = function () {
 let expXhr;
 var exportImage = function () {
     if (expXhr) return;
+    let eeb = document.getElementById("export_executeBtn");
+    eeb.disabled = true;
+    eeb.innerText = "生成中です...";
+    eeb.classList.remove("btn-danger");
 
     // 定数の範囲がおかしいかチェック
     if (Number(document.querySelector("select[name=range_1]").value) > Number(document.querySelector("select[name=range_2]").value))
@@ -448,8 +452,8 @@ var exportImage = function () {
         .then(onFulfilled).catch(onRejectresponse).then(() => expXhr = null);
 
     function onFulfilled(response) {
-        export_executeBtn.innerText = "画像出力";
-        export_executeBtn.disabled = false;
+        eeb.disabled = false;
+        eeb.innerText = "画像出力";
         export_image.src = response.path;
         export_image.addEventListener("load", function () {
             export_loading.classList.add("d-none");
@@ -459,6 +463,9 @@ var exportImage = function () {
         bootstrap.Modal.getOrCreateInstance(modal_export_image_view).show();
     }
     function onRejectresponse(response) {
+        eeb.disabled = false;
+        eeb.innerText = "エラー";
+        eeb.classList.add("btn-danger");
         console.error(response.message);
     }
     function _v() {
@@ -474,7 +481,8 @@ var exportImage = function () {
             r_max: document.querySelector("select[name=range_2]").value,
             hide_exp: export_hiddenExpert.checked.toString(),
             hide_lun: export_hiddenLunatic.checked.toString(),
-            hide_vanilla: export_hiddenVanilla.checked.toString()
+            hide_vanilla: export_hiddenVanilla.checked.toString(),
+            hide_check: export_hiddenCheck.checked.toString()
         }
     }
 }
